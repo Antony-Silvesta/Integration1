@@ -9,6 +9,12 @@ jobs:
   mongodb-integration:
     runs-on: ubuntu-latest
 
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+
     env:  # Environment variables for MongoDB connection
       MONGO_URI: ${{ secrets.MONGO_URI }} # MongoDB connection URI stored securely in GitHub Secrets
       MONGO_DB: "my_database"             # Database name
