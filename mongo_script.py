@@ -1,17 +1,34 @@
+import os
 from pymongo import MongoClient
+from dotenv import load_dotenv
 
-# Define MONGO_URI in the global scope
-MONGO_URI = "mongodb://localhost:27017"
+# Load environment variables from .env file
+load_dotenv()
 
 def main():
-    client = MongoClient(MONGO_URI)
-    db = client['my_database']  # Replace with your DB name
-    collection = db['my_collection']  # Replace with your collection name
+    mongo_uri = os.getenv("MONGO_URI")
+    mongo_db = os.getenv("MONGO_DB")
+    collection_name = "my_collection"
 
-    # Fetch all documents
-    data = list(collection.find({}))
-    print(data)
+    if not mongo_uri or not mongo_db:
+        raise ValueError("Environment variables MONGO_URI or MONGO_DB are not set.")
+
+    print(f"Connecting to MongoDB at {mongo_uri}...")
+
+    try:
+        client = MongoClient(mongo_uri)
+        db = client[mongo_db]
+        collection = db[collection_name]
+
+        data = list(collection.find({}))
+
+        print(f"Documents in collection '{collection_name}':")
+        for entry in data:
+            print(entry)
+
+    except Exception as e:
+        print("Failed to connect or fetch data:", str(e))
+        raise
 
 if __name__ == "__main__":
-    print("Connecting to MongoDB at", MONGO_URI)
     main()
