@@ -1,12 +1,12 @@
-name: MongoDB Direct Integration Pipeline
+name: MongoDB CI/CD
 
 on:
   push:
     branches:
-      - main  # Trigger the pipeline on a push to the main branch
+      - main
 
 jobs:
-  mongodb-integration:
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -15,27 +15,27 @@ jobs:
         ports:
           - 27017:27017
 
-    env:  # Environment variables for MongoDB connection
-      MONGO_URI: ${{ secrets.MONGO_URI }} # MongoDB connection URI stored securely in GitHub Secrets
-      MONGO_DB: "my_database"             # Database name
+    env:
+      MONGO_URI: "mongodb://localhost:27017"
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3  # Checkout your repository code
+      - name: Check out code
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Specify the Python version
+          python-version: "3.9"
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install pymongo python-dotenv
+          pip install -r requirements.txt
 
-      - name: Run Python script
-        run: python mongo_script.py
+      - name: Seed MongoDB
+        run: python app/db.py
 
-        
       - name: Test listing entries
-        run: python app.py
+        run: python app/app.py
+        
+ 
