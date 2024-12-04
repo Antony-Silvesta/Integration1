@@ -1,13 +1,14 @@
-# db.py
-import os
 from pymongo import MongoClient
-
+import os
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+DB_NAME = "my_database"
+COLLECTION_NAME = "my_collection"
 def connect_db():
-    """Establishes and returns a MongoDB connection."""
-    MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")  # Default URI for local MongoDB
-    MONGO_DB = os.getenv("MONGO_DB", "my_database")  # Default database name
-    
-    # Create a MongoDB client and connect to the specified database
-    client = MongoClient(MONGO_URI)
-    db = client[MONGO_DB]
-    return db
+    """Connect to MongoDB and return the database object."""
+    try:
+        client = MongoClient(MONGO_URI)
+        print("Connected to MongoDB")
+        return client[DB_NAME][COLLECTION_NAME]
+    except Exception as e:
+        print(f"Error connecting to MongoDB: {e}")
+        exit(1)

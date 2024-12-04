@@ -35,3 +35,7 @@ jobs:
 
       - name: Run Python script
         run: python mongo_script.py
+
+        
+      - name: Test listing entries
+        run: python app.py
