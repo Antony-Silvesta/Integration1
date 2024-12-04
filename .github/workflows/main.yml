@@ -27,10 +27,5 @@ jobs:
           python -m pip install --upgrade pip
           pip install pymongo
 
-      - name: Execute MongoDB script
-        run: |
-          python mongo_script.py
-
-      - name: Display completion message
-        run: echo "MongoDB direct integration pipeline has completed successfully."
-
+      - name: Run Python script
+        run: python mongo_script.py
