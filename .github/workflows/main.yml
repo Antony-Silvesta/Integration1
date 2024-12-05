@@ -33,7 +33,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Connect MongoDB
-        run: python app/db.py
+        run: python app/seed.py
 
       - name: Test listing entries
         run: python app/app.py

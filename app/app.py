@@ -4,7 +4,7 @@ def list_entries():
     db = connect_db()
     try:
         
-        collection = db["test"]  # Updated collection 
+        collection = db["my_collection"]  # Updated collection name
         entries = collection.find()
         for entry in entries:
             print(entry)
