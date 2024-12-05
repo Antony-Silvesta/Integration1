@@ -1,29 +1,13 @@
 from pymongo import MongoClient
-import os
 
-# MongoDB connection parameters
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-DB_NAME = "mydb"
-COLLECTION_NAME = "test"
+# Connect to MongoDB on localhost
+client = MongoClient("mongodb://localhost:27017/")
 
-def connect_db():
-    """Connect to MongoDB and return the database object."""
-    try:
-        client = MongoClient(MONGO_URI)
-        print("Connected to MongoDB")
-        return client[DB_NAME]  # Return the database object directly
-    except Exception as e:
-        print(f"Error connecting to MongoDB: {e}")
-        exit(1)
+# Create or access a database
+db = client["my_database"]  # Replace "my_database" with your desired database name
 
-def seed_database():
-    """Access the database (no seed data to insert)."""
-    db = connect_db()
-    try:
-        # Just print a success message to confirm the database connection
-        print(f"Connected to collection '{COLLECTION_NAME}' in the '{DB_NAME}' database.")
-    except Exception as e:
-        print(f"Error accessing the database: {e}")
+# Create a collection with an option to ensure creation
+collection = db.create_collection("my_collection", capped=False)
 
-if __name__ == "__main__":
-    seed_database()
+# Print confirmation
+print(f"Database '{db.name}' and Collection '{collection.name}' are created.")
